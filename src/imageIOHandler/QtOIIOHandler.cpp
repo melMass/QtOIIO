@@ -108,9 +108,13 @@ bool QtOIIOHandler::read(QImage *image)
         }
     }
     else
-    {
-        qWarning() << "[QtOIIO] failed to load \"" << path.c_str() << "\", nchannels=" << inSpec.nchannels;
-        return false;
+    {  
+        qDebug() << "[QtOIIO] too many channels, extracting first RGBA";
+        format = QImage::Format_RGB32;
+        //nchannels = inSpec.nchannels;
+        nchannels = 4;
+        //qWarning() << "[QtOIIO] failed to load \"" << path.c_str() << "\", nchannels=" << inSpec.nchannels;
+        //return false;
     }
 
     qDebug() << "[QtOIIO] nchannels:" << nchannels;
