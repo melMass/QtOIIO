@@ -108,9 +108,9 @@ bool QtOIIOHandler::read(QImage *image)
         }
     }
     else
-    {  
+    {
         qDebug() << "[QtOIIO] too many channels, extracting first RGBA";
-        format = QImage::Format_RGB32;
+        format = QImage::Format_ARGB32;
         //nchannels = inSpec.nchannels;
         nchannels = 4;
         //qWarning() << "[QtOIIO] failed to load \"" << path.c_str() << "\", nchannels=" << inSpec.nchannels;
@@ -230,7 +230,8 @@ bool QtOIIOHandler::read(QImage *image)
         oiio::ImageSpec requestedSpec(inSpec.width, inSpec.height, nchannels, typeDesc);
         oiio::ImageBuf tmpBuf(requestedSpec);
 
-        const std::vector<int> channelOrder = {2, 1, 0, 3}; // This one works, not sure why...
+        // const std::vector<int> channelOrder = {2, 1, 0, 3}; // This one works, not sure why...
+        const std::vector<int> channelOrder = {0, 1, 2, 3}; // This one works, not sure why...
         oiio::ImageBufAlgo::channels(tmpBuf, inBuf, 4, &channelOrder.front());
         inBuf.swap(tmpBuf);
         // qDebug() << "[QtOIIO] shuffle channels done";
