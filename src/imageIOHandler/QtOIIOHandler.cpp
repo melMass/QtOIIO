@@ -74,7 +74,6 @@ bool QtOIIOHandler::read(QImage *image)
     configSpec.attribute("raw:use_camera_matrix", 3); // want to use embeded color profile
 
     oiio::ImageBuf inBuf(path, 0, 0, NULL, &configSpec);
-
     if(!inBuf.initialized())
         throw std::runtime_error("Can't find/open image file '" + path + "'.");
 
@@ -109,7 +108,10 @@ bool QtOIIOHandler::read(QImage *image)
     }
     else
     {
-        qDebug() << "[QtOIIO] too many channels, extracting first RGBA";
+        std::string chnls;
+        for (auto const& s : inSpec.channelnames) { chnls += s + " "; }
+        qInfo() << "[QtOIIO] too many channels, found: " << chnls.c_str();
+        qInfo() << "[QtOIIO] extracting: " << inSpec.channelnames[0].c_str() << inSpec.channelnames[1].c_str() << inSpec.channelnames[2].c_str() << inSpec.channelnames[3].c_str();
         format = QImage::Format_ARGB32;
         //nchannels = inSpec.nchannels;
         nchannels = 4;
