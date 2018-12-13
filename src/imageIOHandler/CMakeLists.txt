@@ -26,4 +26,4 @@ if(Qt5Core_FOUND)
       )
 endif()
 
-install(TARGETS QtOIIOPlugin DESTINATION plugins/imageformats)
+install(TARGETS QtOIIOPlugin DESTINATION imageformats)
